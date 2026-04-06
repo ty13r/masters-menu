@@ -1,6 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import MenuCard from "@/components/MenuCard";
+import SocialShareButtons from "@/components/SocialShareButtons";
 import { decodeMenu } from "@/lib/url-encoding";
 
 interface Props {
@@ -9,6 +11,7 @@ interface Props {
 
 export default function MenuViewClient({ encoded }: Props) {
   const menu = encoded ? decodeMenu(encoded) : null;
+  const cardRef = useRef<HTMLDivElement>(null);
 
   if (!menu) {
     return (
@@ -35,7 +38,10 @@ export default function MenuViewClient({ encoded }: Props) {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center">
       <div className="w-full max-w-3xl py-8 px-4">
         <div className="rounded-lg overflow-hidden shadow-xl">
-          <MenuCard menu={menu} />
+          <MenuCard ref={cardRef} menu={menu} />
+        </div>
+        <div className="mt-6">
+          <SocialShareButtons menu={menu} cardRef={cardRef} />
         </div>
         <div className="text-center mt-6">
           <a

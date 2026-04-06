@@ -14,15 +14,28 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-[#006747] text-white py-4 px-6">
-        <h1
-          className="text-xl font-bold text-center"
-          style={{ fontFamily: "var(--font-playfair), serif" }}
-        >
-          Masters Club Dinner Menu Builder
-        </h1>
-        <p className="text-center text-sm opacity-80 mt-1">
-          Create your dream Masters dinner and share it with friends
-        </p>
+        <div className="flex items-center justify-between max-w-7xl mx-auto">
+          <div className="flex-1" />
+          <div className="text-center">
+            <h1
+              className="text-xl font-bold"
+              style={{ fontFamily: "var(--font-playfair), serif" }}
+            >
+              Masters Club Dinner Menu Builder
+            </h1>
+            <p className="text-sm opacity-80 mt-1">
+              Create your dream Masters dinner and share it with friends
+            </p>
+          </div>
+          <div className="flex-1 flex justify-end">
+            <a
+              href="/leaderboard"
+              className="text-sm text-white/90 hover:text-white underline"
+            >
+              Leaderboard
+            </a>
+          </div>
+        </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
