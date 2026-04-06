@@ -40,7 +40,7 @@ const MenuCard = forwardRef<HTMLDivElement, Props>(({ menu }, ref) => {
         <div style={{ marginBottom: "12px" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/augusta-logo.svg"
+            src="/augusta-logo.png"
             alt="Augusta National Golf Club"
             style={{ height: "80px", width: "auto", margin: "0 auto" }}
           />
