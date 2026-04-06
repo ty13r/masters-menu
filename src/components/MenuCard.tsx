@@ -36,18 +36,14 @@ const MenuCard = forwardRef<HTMLDivElement, Props>(({ menu }, ref) => {
           boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
         }}
       >
-        {/* Header */}
-        <div
-          style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: "13px",
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            marginBottom: "4px",
-            fontWeight: 700,
-          }}
-        >
-          Masters Club
+        {/* Logo */}
+        <div style={{ marginBottom: "12px" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/augusta-logo.svg"
+            alt="Augusta National Golf Club"
+            style={{ height: "80px", width: "auto", margin: "0 auto" }}
+          />
         </div>
         <h1
           style={{
