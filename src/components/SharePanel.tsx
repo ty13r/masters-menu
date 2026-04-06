@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { toPng } from "html-to-image";
 import type { MenuData } from "@/lib/menu-data";
 import { encodeMenu } from "@/lib/url-encoding";
+import SocialShareButtons from "./SocialShareButtons";
 
 interface Props {
   menu: MenuData;
@@ -49,20 +50,23 @@ export default function SharePanel({ menu, cardRef }: Props) {
   }, [menu]);
 
   return (
-    <div className="flex gap-3 flex-wrap">
-      <button
-        onClick={handleDownload}
-        disabled={downloading}
-        className="px-5 py-2.5 bg-[#006747] text-white rounded-lg font-medium text-sm hover:bg-[#005238] transition-colors disabled:opacity-50 cursor-pointer"
-      >
-        {downloading ? "Generating..." : "Download PNG"}
-      </button>
-      <button
-        onClick={handleCopyLink}
-        className="px-5 py-2.5 border-2 border-[#006747] text-[#006747] rounded-lg font-medium text-sm hover:bg-[#006747]/5 transition-colors cursor-pointer"
-      >
-        {copying ? "Copied!" : "Copy Share Link"}
-      </button>
+    <div className="space-y-4">
+      <div className="flex gap-3 flex-wrap">
+        <button
+          onClick={handleDownload}
+          disabled={downloading}
+          className="px-5 py-2.5 bg-[#006747] text-white rounded-lg font-medium text-sm hover:bg-[#005238] transition-colors disabled:opacity-50 cursor-pointer"
+        >
+          {downloading ? "Generating..." : "Download PNG"}
+        </button>
+        <button
+          onClick={handleCopyLink}
+          className="px-5 py-2.5 border-2 border-[#006747] text-[#006747] rounded-lg font-medium text-sm hover:bg-[#006747]/5 transition-colors cursor-pointer"
+        >
+          {copying ? "Copied!" : "Copy Share Link"}
+        </button>
+      </div>
+      <SocialShareButtons menu={menu} cardRef={cardRef} />
     </div>
   );
 }

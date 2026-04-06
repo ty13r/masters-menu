@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# leaderboard data
+/data/leaderboard.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
