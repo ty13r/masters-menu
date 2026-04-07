@@ -26,6 +26,9 @@ function getPool(): VercelPool {
 export const sql: VercelPool["sql"] = (...args: Parameters<VercelPool["sql"]>) =>
   getPool().sql(...args);
 
+export const query: VercelPool["query"] = ((...args: Parameters<VercelPool["query"]>) =>
+  getPool().query(...args)) as VercelPool["query"];
+
 let schemaReady: Promise<void> | null = null;
 
 export function ensureSchema(): Promise<void> {
@@ -40,33 +43,26 @@ export function ensureSchema(): Promise<void> {
           created_at TIMESTAMPTZ DEFAULT NOW()
         )
       `;
+      await pool.sql`ALTER TABLE menus ADD COLUMN IF NOT EXISTS theme TEXT`;
+      await pool.sql`ALTER TABLE menus ADD COLUMN IF NOT EXISTS like_count INTEGER NOT NULL DEFAULT 0`;
+      await pool.sql`ALTER TABLE menus ADD COLUMN IF NOT EXISTS featured BOOLEAN NOT NULL DEFAULT FALSE`;
+      await pool.sql`ALTER TABLE menus ADD COLUMN IF NOT EXISTS hidden BOOLEAN NOT NULL DEFAULT FALSE`;
+      await pool.sql`ALTER TABLE menus ADD COLUMN IF NOT EXISTS popularity_boost INTEGER NOT NULL DEFAULT 0`;
       await pool.sql`
-        CREATE TABLE IF NOT EXISTS leaderboard_entries (
-          id TEXT PRIMARY KEY,
-          menu_id TEXT NOT NULL,
-          honoree TEXT NOT NULL,
-          total_likes INTEGER DEFAULT 0,
-          submitted_at TIMESTAMPTZ DEFAULT NOW(),
-          updated_at TIMESTAMPTZ DEFAULT NOW()
+        CREATE TABLE IF NOT EXISTS menu_likes (
+          menu_id TEXT REFERENCES menus(id) ON DELETE CASCADE,
+          fingerprint TEXT NOT NULL,
+          created_at TIMESTAMPTZ DEFAULT NOW(),
+          PRIMARY KEY (menu_id, fingerprint)
         )
       `;
       await pool.sql`
-        CREATE TABLE IF NOT EXISTS social_posts (
-          id SERIAL PRIMARY KEY,
-          entry_id TEXT NOT NULL REFERENCES leaderboard_entries(id) ON DELETE CASCADE,
-          platform TEXT NOT NULL,
-          url TEXT NOT NULL,
-          like_count INTEGER,
-          last_fetched TIMESTAMPTZ DEFAULT NOW()
-        )
+        CREATE INDEX IF NOT EXISTS idx_menus_popularity
+        ON menus((like_count + popularity_boost) DESC)
       `;
       await pool.sql`
-        CREATE INDEX IF NOT EXISTS idx_leaderboard_total_likes
-        ON leaderboard_entries(total_likes DESC)
-      `;
-      await pool.sql`
-        CREATE INDEX IF NOT EXISTS idx_social_posts_entry
-        ON social_posts(entry_id)
+        CREATE INDEX IF NOT EXISTS idx_menus_created
+        ON menus(created_at DESC)
       `;
       await pool.sql`
         CREATE TABLE IF NOT EXISTS ai_rate_limits (

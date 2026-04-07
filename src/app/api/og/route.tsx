@@ -206,6 +206,8 @@ interface Scale {
   cardPaddingX: number;
   outerPadding: number;
   showWines: boolean;
+  /** Clip rendering to the top half: only render up to and including main course. */
+  clipBottom?: boolean;
 }
 
 function dishItem(dish: Dish, s: Scale, key?: string | number) {
@@ -280,9 +282,10 @@ function renderMenuCard(menu: Menu, logo: string, background: string, s: Scale) 
         padding: s.outerPadding,
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: s.clipBottom ? "flex-start" : "center",
         width: "100%",
         height: "100%",
+        overflow: "hidden",
       }}
     >
       <div
@@ -410,11 +413,11 @@ function renderMenuCard(menu: Menu, logo: string, background: string, s: Scale) 
           ))}
         <div style={{ height: 20 * s.base }} />
 
-        {sectionHeader("Dessert", s)}
-        {dishItem(menu.dessert, s)}
-        <div style={{ height: 20 * s.base }} />
+        {!s.clipBottom && sectionHeader("Dessert", s)}
+        {!s.clipBottom && dishItem(menu.dessert, s)}
+        {!s.clipBottom && <div style={{ height: 20 * s.base }} />}
 
-        {s.showWines && menu.wines.length > 0 && (
+        {!s.clipBottom && s.showWines && menu.wines.length > 0 && (
           <div
             style={{
               display: "flex",
@@ -441,46 +444,52 @@ function renderMenuCard(menu: Menu, logo: string, background: string, s: Scale) 
           </div>
         )}
 
-        <div
-          style={{
-            fontFamily: "Playfair Display",
-            fontSize: 22 * s.base,
-            opacity: 0.6,
-            color: GREEN,
-            marginBottom: 16 * s.base,
-            display: "flex",
-            letterSpacing: "0.4em",
-          }}
-        >
-          ~ * ~
-        </div>
+        {!s.clipBottom && (
+          <div
+            style={{
+              fontFamily: "Playfair Display",
+              fontSize: 22 * s.base,
+              opacity: 0.6,
+              color: GREEN,
+              marginBottom: 16 * s.base,
+              display: "flex",
+              letterSpacing: "0.4em",
+            }}
+          >
+            ~ * ~
+          </div>
+        )}
 
-        <div
-          style={{
-            fontFamily: "Playfair Display",
-            fontStyle: "italic",
-            fontSize: 18 * s.base,
-            fontWeight: 700,
-            color: GREEN,
-            display: "flex",
-          }}
-        >
-          Served in Honor of {menu.honoree}
-        </div>
+        {!s.clipBottom && (
+          <div
+            style={{
+              fontFamily: "Playfair Display",
+              fontStyle: "italic",
+              fontSize: 18 * s.base,
+              fontWeight: 700,
+              color: GREEN,
+              display: "flex",
+            }}
+          >
+            Served in Honor of {menu.honoree}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 const SCALES: Record<Format, Scale> = {
-  // Landscape: 1200x630, very wide and short. Scale down and skip wines so it fits.
+  // Landscape: 1200x630. Render the top of the menu (logo → main course)
+  // at full scale and clip the rest so the OG card is actually readable.
   landscape: {
-    base: 0.78,
-    cardMaxWidth: 580,
-    cardPaddingY: 24,
-    cardPaddingX: 32,
-    outerPadding: 20,
+    base: 1.3,
+    cardMaxWidth: 920,
+    cardPaddingY: 40,
+    cardPaddingX: 56,
+    outerPadding: 24,
     showWines: false,
+    clipBottom: true,
   },
   // Square: 1080x1080, near-perfect for the natural card layout.
   square: {

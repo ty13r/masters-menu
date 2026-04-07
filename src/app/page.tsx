@@ -6,6 +6,7 @@ import InlineMenu from "@/components/InlineMenu";
 import LandingHero from "@/components/LandingHero";
 import GuidedEditBar from "@/components/GuidedEditBar";
 import ShareModal from "@/components/ShareModal";
+import SiteHeader from "@/components/SiteHeader";
 import AiGenerateModal from "@/components/ai/AiGenerateModal";
 import InspireMeButton from "@/components/ai/InspireMeButton";
 import { STEPS, TOTAL_STEPS, type StepGroupId } from "@/lib/menu-steps";
@@ -213,27 +214,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-[#006747] text-white py-4 px-6">
-        <div className="flex items-center justify-between max-w-5xl mx-auto">
-          <div className="flex-1" />
-          <div className="text-center">
-            <h1
-              className="text-xl font-bold"
-              style={{ fontFamily: "var(--font-playfair), serif" }}
-            >
-              Masters Champions Dinner Menu Generator
-            </h1>
-          </div>
-          <div className="flex-1 flex justify-end">
-            <a
-              href="/leaderboard"
-              className="text-sm text-white/90 hover:text-white underline"
-            >
-              Popular Menus
-            </a>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {phase === "landing" && (
         <LandingHero onStart={startEditing} onGenerateAi={handleOpenAi} />
@@ -295,6 +276,7 @@ export default function Home() {
         onClose={handleCloseShare}
         menu={menu}
         cardRef={cardRef}
+        themeId={themeId}
       />
 
       <AiGenerateModal

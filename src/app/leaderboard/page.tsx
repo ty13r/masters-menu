@@ -1,8 +1,9 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import LeaderboardClient from "./leaderboard-client";
 
 const PAGE_DESCRIPTION =
-  "The most popular Masters Champions Dinner menus, ranked by social media engagement.";
+  "Browse and like the most popular Masters Champions Dinner menus.";
 
 export const metadata: Metadata = {
   title: "Most Popular Menus - Masters Champions Dinner",
@@ -23,5 +24,9 @@ export const metadata: Metadata = {
 };
 
 export default function LeaderboardPage() {
-  return <LeaderboardClient />;
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <LeaderboardClient />
+    </Suspense>
+  );
 }
