@@ -15,6 +15,3 @@ export function getTikTokCopyText(menuUrl: string, honoree: string): string {
   return `Check out ${honoree}'s Masters Club Dinner menu!\n\n${menuUrl}\n\n#MastersDinner #AugustaNational #Masters`;
 }
 
-export function getMenuShareUrl(origin: string, encodedMenu: string): string {
-  return `${origin}/menu?d=${encodedMenu}`;
-}
