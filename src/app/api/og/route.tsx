@@ -67,6 +67,16 @@ async function getLogoDataUrl(): Promise<string> {
   return logoCache;
 }
 
+let backgroundCache: string | null = null;
+async function getBackgroundDataUrl(): Promise<string> {
+  if (backgroundCache) return backgroundCache;
+  const buf = await fs.readFile(
+    path.join(process.cwd(), "public", "menu-background.png")
+  );
+  backgroundCache = `data:image/png;base64,${buf.toString("base64")}`;
+  return backgroundCache;
+}
+
 interface FontDef {
   name: string;
   data: ArrayBuffer;
@@ -259,12 +269,14 @@ function sectionHeader(text: string, s: Scale) {
   );
 }
 
-function renderMenuCard(menu: Menu, logo: string, s: Scale) {
+function renderMenuCard(menu: Menu, logo: string, background: string, s: Scale) {
   return (
     <div
       style={{
-        background:
-          "radial-gradient(ellipse at center, #f8c8d4 0%, #f0a8b8 30%, #e890a8 50%, #d4789a 70%, #c06888 100%)",
+        backgroundImage: `url(${background})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         padding: s.outerPadding,
         display: "flex",
         justifyContent: "center",
@@ -498,15 +510,16 @@ export async function GET(request: NextRequest) {
       ? formatParam
       : "landscape";
 
-  const [menu, logo, fonts] = await Promise.all([
+  const [menu, logo, background, fonts] = await Promise.all([
     loadMenu(request),
     getLogoDataUrl(),
+    getBackgroundDataUrl(),
     getFonts().catch(() => null),
   ]);
 
   const dimensions = FORMAT_DIMENSIONS[format];
   const scale = SCALES[format];
-  const element = renderMenuCard(menu, logo, scale);
+  const element = renderMenuCard(menu, logo, background, scale);
 
   return new ImageResponse(element, {
     ...dimensions,

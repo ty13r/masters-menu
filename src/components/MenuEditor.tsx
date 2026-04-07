@@ -78,7 +78,7 @@ export default function MenuEditor({
       </Section>
 
       {/* Wines */}
-      <Section title="Wine Pairings">
+      <Section title="Beverage Pairings">
         {menu.wines.map((wine, i) => (
           <Input
             key={i}
