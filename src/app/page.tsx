@@ -221,7 +221,7 @@ export default function Home() {
               className="text-xl font-bold"
               style={{ fontFamily: "var(--font-playfair), serif" }}
             >
-              Masters Club Champions Menu Builder
+              Masters Champions Dinner Menu Generator
             </h1>
           </div>
           <div className="flex-1 flex justify-end">
@@ -229,7 +229,7 @@ export default function Home() {
               href="/leaderboard"
               className="text-sm text-white/90 hover:text-white underline"
             >
-              Leaderboard
+              Popular Menus
             </a>
           </div>
         </div>

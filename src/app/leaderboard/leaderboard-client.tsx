@@ -10,10 +10,10 @@ export default function LeaderboardClient() {
           className="text-xl font-bold text-center"
           style={{ fontFamily: "var(--font-playfair), serif" }}
         >
-          Masters Club Champions Leaderboard
+          Most Popular Menus
         </h1>
         <p className="text-center text-sm opacity-80 mt-1">
-          Ranked by total social media engagement
+          Ranked by social media engagement
         </p>
         <div className="flex justify-center gap-4 mt-2">
           <a href="/" className="text-sm underline opacity-80 hover:opacity-100">

@@ -25,24 +25,25 @@ const siteUrl =
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
   "http://localhost:3000";
 
+const SITE_TITLE = "Masters Champions Dinner Menu Generator";
+const SITE_DESCRIPTION =
+  "Create and share a meal that reflects you. The Masters Champions Dinner Menu Generator.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Masters Club Champions Menu Builder",
-  description:
-    "Create your own Masters Club Champions menu and share it with friends on social media.",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   openGraph: {
-    title: "Masters Club Champions Menu Builder",
-    description:
-      "Create your own Masters Club Champions menu and share it with friends on social media.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: [
       { url: "/api/og?format=landscape", width: 1200, height: 630 },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Masters Club Champions Menu Builder",
-    description:
-      "Create your own Masters Club Champions menu and share it with friends on social media.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: ["/api/og?format=landscape"],
   },
 };
@@ -57,7 +58,28 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${lora.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <div className="flex-1">{children}</div>
+        <footer className="text-center py-4 px-4 text-xs text-gray-500 space-y-1">
+          <div>
+            By{" "}
+            <a
+              href="https://www.instagram.com/forewhisperer"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#006747] hover:underline"
+            >
+              Fore Whisperer
+            </a>
+          </div>
+          <div className="text-[10px] text-gray-400 max-w-md mx-auto leading-snug">
+            This website is in no way affiliated with, endorsed by, or
+            sponsored by Augusta National Golf Club, the Masters Tournament,
+            or any related entities. All trademarks are property of their
+            respective owners.
+          </div>
+        </footer>
+      </body>
     </html>
   );
 }

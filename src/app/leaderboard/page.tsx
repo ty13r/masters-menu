@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
 import LeaderboardClient from "./leaderboard-client";
 
+const PAGE_DESCRIPTION =
+  "The most popular Masters Champions Dinner menus, ranked by social media engagement.";
+
 export const metadata: Metadata = {
-  title: "Leaderboard - Masters Club Champions",
-  description:
-    "See who has the most popular Masters Club Champions menu on social media.",
+  title: "Most Popular Menus - Masters Champions Dinner",
+  description: PAGE_DESCRIPTION,
   openGraph: {
-    title: "Masters Club Champions Leaderboard",
-    description:
-      "See who has the most popular Masters Club Champions menu on social media.",
+    title: "Most Popular Menus",
+    description: PAGE_DESCRIPTION,
     images: [
       { url: "/api/og?format=landscape", width: 1200, height: 630 },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Masters Club Champions Leaderboard",
-    description:
-      "See who has the most popular Masters Club Champions menu on social media.",
+    title: "Most Popular Menus",
+    description: PAGE_DESCRIPTION,
     images: ["/api/og?format=landscape"],
   },
 };

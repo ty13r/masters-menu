@@ -27,11 +27,10 @@ export default function LandingHero({ onStart, onGenerateAi }: Props) {
           className="text-3xl sm:text-4xl font-bold text-[#006747] mb-3"
           style={{ fontFamily: "var(--font-playfair), serif" }}
         >
-          Build Your Masters Club Champions Menu
+          Masters Champions Dinner Menu Generator
         </h1>
         <p className="text-[#006747]/80 mb-8 text-base leading-relaxed">
-          A guided walkthrough. About two minutes. Then share your menu with
-          friends and see if you can top the leaderboard.
+          Create and share a meal that reflects you
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
@@ -54,7 +53,7 @@ export default function LandingHero({ onStart, onGenerateAi }: Props) {
             href="/leaderboard"
             className="text-sm text-[#006747]/70 hover:text-[#006747] underline"
           >
-            View leaderboard
+            View popular menus
           </a>
         </div>
       </div>

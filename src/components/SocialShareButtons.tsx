@@ -313,13 +313,13 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
                   </a>
                   , upload the image and paste the caption
                 </li>
-                <li>Paste your post URL below to join the leaderboard</li>
+                <li>Paste your post URL below to climb the popular menus list</li>
               </ol>
             </div>
           ) : (
             <p className="text-xs text-gray-700">
               After posting, paste your {PLATFORM_LABELS[activePlatform]} post
-              URL below to join the leaderboard.
+              URL below to climb the popular menus list.
             </p>
           )}
           <div className="flex gap-2">
@@ -345,9 +345,9 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
       {submitted && (
         <div className="bg-green-50 rounded-lg p-3">
           <p className="text-xs text-green-700 font-medium">
-            Added to the leaderboard! View rankings on the{" "}
+            Added to popular menus! View rankings on the{" "}
             <a href="/leaderboard" className="underline">
-              leaderboard page
+              popular menus page
             </a>
             .
           </p>
