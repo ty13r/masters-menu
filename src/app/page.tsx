@@ -59,7 +59,7 @@ export default function Home() {
               </h2>
               <SharePanel menu={menu} cardRef={cardRef} />
             </div>
-            <div className="rounded-lg overflow-hidden shadow-lg lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
+            <div className="rounded-lg overflow-hidden shadow-lg">
               <MenuCard ref={cardRef} menu={menu} />
             </div>
           </div>
