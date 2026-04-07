@@ -56,7 +56,12 @@ export default async function ShortMenuPage({ params }: Props) {
         </div>
       }
     >
-      <MenuViewClient encoded={stored.data} />
+      <MenuViewClient
+        encoded={stored.data}
+        menuId={stored.id}
+        initialLikeCount={stored.likeCount}
+        themeId={stored.theme}
+      />
     </Suspense>
   );
 }
