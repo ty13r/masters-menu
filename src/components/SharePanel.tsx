@@ -22,6 +22,10 @@ export default function SharePanel({ menu, cardRef }: Props) {
       const dataUrl = await toPng(cardRef.current, {
         pixelRatio: 2,
         cacheBust: true,
+        filter: (node) => {
+          if (!(node instanceof HTMLElement)) return true;
+          return node.dataset.editOnly !== "true";
+        },
       });
       const link = document.createElement("a");
       link.download = `masters-dinner-${menu.honoree.replace(/\s+/g, "-").toLowerCase()}.png`;

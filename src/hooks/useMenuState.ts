@@ -38,5 +38,12 @@ export function useMenuState(initial?: MenuData) {
     });
   }, []);
 
-  return { menu, setMenu, updateField, updateAppetizer, updateMainCourse, updateWine };
+  return {
+    menu,
+    setMenu,
+    updateField,
+    updateAppetizer,
+    updateMainCourse,
+    updateWine,
+  };
 }
