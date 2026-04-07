@@ -9,7 +9,6 @@ import {
   getFacebookShareUrl,
   getInstagramCopyText,
   getTikTokCopyText,
-  getMenuShareUrl,
 } from "@/lib/social-share";
 import type { Platform } from "@/lib/leaderboard-types";
 
@@ -78,10 +77,20 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [sharingPlatform, setSharingPlatform] = useState<Platform | null>(null);
+  const [menuId, setMenuId] = useState<string | null>(null);
 
-  const getMenuUrl = useCallback(() => {
+  const createShortUrl = useCallback(async () => {
     const encoded = encodeMenu(menu);
-    return getMenuShareUrl(window.location.origin, encoded);
+    const res = await fetch("/api/menus", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ menuData: encoded, honoree: menu.honoree }),
+    });
+    if (!res.ok) throw new Error("Failed to create short URL");
+    const data = (await res.json()) as { id: string; url: string };
+    setMenuId(data.id);
+    return { id: data.id, url: `${window.location.origin}${data.url}` };
   }, [menu]);
 
   const downloadPng = useCallback(async () => {
@@ -98,34 +107,42 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
 
   const handleShare = useCallback(
     async (platform: Platform) => {
-      const menuUrl = getMenuUrl();
-      setActivePlatform(platform);
+      setSharingPlatform(platform);
       setPostUrl("");
       setSubmitted(false);
       setError("");
 
-      switch (platform) {
-        case "x":
-          window.open(getTwitterShareUrl(menuUrl, menu.honoree), "_blank");
-          break;
-        case "facebook":
-          window.open(getFacebookShareUrl(menuUrl), "_blank");
-          break;
-        case "instagram": {
-          const igText = getInstagramCopyText(menuUrl, menu.honoree);
-          await navigator.clipboard.writeText(igText);
-          await downloadPng();
-          break;
+      try {
+        const { url: menuUrl } = await createShortUrl();
+        setActivePlatform(platform);
+
+        switch (platform) {
+          case "x":
+            window.open(getTwitterShareUrl(menuUrl, menu.honoree), "_blank");
+            break;
+          case "facebook":
+            window.open(getFacebookShareUrl(menuUrl), "_blank");
+            break;
+          case "instagram": {
+            const igText = getInstagramCopyText(menuUrl, menu.honoree);
+            await navigator.clipboard.writeText(igText);
+            await downloadPng();
+            break;
+          }
+          case "tiktok": {
+            const ttText = getTikTokCopyText(menuUrl, menu.honoree);
+            await navigator.clipboard.writeText(ttText);
+            await downloadPng();
+            break;
+          }
         }
-        case "tiktok": {
-          const ttText = getTikTokCopyText(menuUrl, menu.honoree);
-          await navigator.clipboard.writeText(ttText);
-          await downloadPng();
-          break;
-        }
+      } catch {
+        setError("Failed to create share link. Please try again.");
+      } finally {
+        setSharingPlatform(null);
       }
     },
-    [getMenuUrl, menu.honoree, downloadPng]
+    [createShortUrl, menu.honoree, downloadPng]
   );
 
   const handleSubmitUrl = useCallback(async () => {
@@ -134,13 +151,19 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
     setError("");
 
     try {
-      const encoded = encodeMenu(menu);
+      // Ensure we have a stored menu id (should already from handleShare)
+      let id = menuId;
+      if (!id) {
+        const created = await createShortUrl();
+        id = created.id;
+      }
+
       const res = await fetch("/api/leaderboard", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           honoree: menu.honoree,
-          menuData: encoded,
+          menuId: id,
           platform: activePlatform,
           postUrl: postUrl.trim(),
         }),
@@ -162,7 +185,7 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
     } finally {
       setSubmitting(false);
     }
-  }, [postUrl, activePlatform, menu]);
+  }, [postUrl, activePlatform, menu.honoree, menuId, createShortUrl]);
 
   return (
     <div className="space-y-3">
@@ -172,14 +195,16 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
       <div className="flex flex-wrap gap-2">
         {(Object.keys(PLATFORM_LABELS) as Platform[]).map((platform) => {
           const Icon = PLATFORM_ICONS[platform];
+          const isLoading = sharingPlatform === platform;
           return (
             <button
               key={platform}
               onClick={() => handleShare(platform)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-opacity hover:opacity-80 cursor-pointer ${PLATFORM_COLORS[platform]}`}
+              disabled={sharingPlatform !== null}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-opacity hover:opacity-80 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${PLATFORM_COLORS[platform]}`}
             >
               <Icon />
-              {PLATFORM_LABELS[platform]}
+              {isLoading ? "..." : PLATFORM_LABELS[platform]}
             </button>
           );
         })}

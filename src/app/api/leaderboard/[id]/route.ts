@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readStore, writeStore } from "@/lib/storage";
+import { addSocialPostToEntry } from "@/lib/storage";
 import { fetchLikes } from "@/lib/social-fetchers";
 import type { Platform, SocialPost } from "@/lib/leaderboard-types";
 
@@ -34,12 +34,6 @@ export async function PUT(
     );
   }
 
-  const store = await readStore();
-  const entry = store.entries.find((e) => e.id === id);
-  if (!entry) {
-    return NextResponse.json({ error: "Entry not found" }, { status: 404 });
-  }
-
   const likeCount = await fetchLikes(platform, postUrl);
   const now = new Date().toISOString();
 
@@ -50,13 +44,9 @@ export async function PUT(
     lastFetched: now,
   };
 
-  entry.socialPosts.push(newPost);
-  entry.totalLikes = entry.socialPosts.reduce(
-    (sum, p) => sum + (p.likeCount ?? 0),
-    0
-  );
-  entry.updatedAt = now;
-
-  await writeStore(store);
+  const entry = await addSocialPostToEntry(id, newPost);
+  if (!entry) {
+    return NextResponse.json({ error: "Entry not found" }, { status: 404 });
+  }
   return NextResponse.json(entry);
 }

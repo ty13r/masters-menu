@@ -159,7 +159,7 @@ export default function LeaderboardTable() {
                   </td>
                   <td className="text-right py-3 px-4">
                     <a
-                      href={`/menu?d=${entry.menuData}`}
+                      href={`/m/${entry.menuData}`}
                       className="text-[#006747] underline hover:text-[#005238]"
                     >
                       View
@@ -209,7 +209,7 @@ export default function LeaderboardTable() {
                 ))}
               </div>
               <a
-                href={`/menu?d=${entry.menuData}`}
+                href={`/m/${entry.menuData}`}
                 className="text-sm text-[#006747] underline"
               >
                 View Menu

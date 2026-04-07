@@ -28,22 +28,19 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { honoree, menuData, platform, postUrl } = body;
+  const { honoree, menuId, platform, postUrl } = body;
 
   if (!honoree || typeof honoree !== "string") {
     return NextResponse.json({ error: "honoree is required" }, { status: 400 });
   }
-  if (!menuData || typeof menuData !== "string") {
+  if (!menuId || typeof menuId !== "string") {
     return NextResponse.json(
-      { error: "menuData is required" },
+      { error: "menuId is required" },
       { status: 400 }
     );
   }
   if (!VALID_PLATFORMS.includes(platform)) {
-    return NextResponse.json(
-      { error: "Invalid platform" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid platform" }, { status: 400 });
   }
   if (!postUrl || !isValidUrlForPlatform(postUrl, platform)) {
     return NextResponse.json(
@@ -64,8 +61,8 @@ export async function POST(request: NextRequest) {
 
   const entry = await addEntry({
     honoree,
-    menuData,
-    socialPosts: [socialPost],
+    menuId,
+    socialPost,
     totalLikes: likeCount ?? 0,
   });
 
