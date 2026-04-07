@@ -1,5 +1,5 @@
 export function getTwitterShareUrl(menuUrl: string, honoree: string): string {
-  const text = `Check out ${honoree}'s Masters Club Dinner menu!`;
+  const text = `Check out ${honoree}'s Masters Club Champions menu!`;
   return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(menuUrl)}`;
 }
 
@@ -8,10 +8,10 @@ export function getFacebookShareUrl(menuUrl: string): string {
 }
 
 export function getInstagramCopyText(menuUrl: string, honoree: string): string {
-  return `Check out ${honoree}'s Masters Club Dinner menu!\n\n${menuUrl}\n\n#MastersDinner #AugustaNational #Masters`;
+  return `Check out ${honoree}'s Masters Club Champions menu!\n\n${menuUrl}\n\n#MastersChampions #AugustaNational #Masters`;
 }
 
 export function getTikTokCopyText(menuUrl: string, honoree: string): string {
-  return `Check out ${honoree}'s Masters Club Dinner menu!\n\n${menuUrl}\n\n#MastersDinner #AugustaNational #Masters`;
+  return `Check out ${honoree}'s Masters Club Champions menu!\n\n${menuUrl}\n\n#MastersChampions #AugustaNational #Masters`;
 }
 

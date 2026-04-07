@@ -1,5 +1,7 @@
 "use client";
 
+import type { ReactNode } from "react";
+
 interface Props {
   currentIndex: number;
   total: number;
@@ -7,6 +9,8 @@ interface Props {
   onBack: () => void;
   onSkip: () => void;
   onNext: () => void;
+  /** Optional extra content (e.g. an Inspire Me button) shown left of Back. */
+  inspireSlot?: ReactNode;
 }
 
 export default function GuidedEditBar({
@@ -16,6 +20,7 @@ export default function GuidedEditBar({
   onBack,
   onSkip,
   onNext,
+  inspireSlot,
 }: Props) {
   const isFirst = currentIndex === 0;
   const isLast = currentIndex === total - 1;
@@ -44,7 +49,8 @@ export default function GuidedEditBar({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap justify-end">
+          {inspireSlot}
           <button
             type="button"
             onClick={onBack}

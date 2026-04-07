@@ -1,5 +1,4 @@
 export type StepGroupId =
-  | "date"
   | "appetizer-0"
   | "appetizer-1"
   | "appetizer-2"
@@ -20,7 +19,6 @@ export interface Step {
 }
 
 export const STEPS: ReadonlyArray<Step> = [
-  { id: "date", label: "Date" },
   { id: "appetizer-0", label: "Appetizer 1" },
   { id: "appetizer-1", label: "Appetizer 2" },
   { id: "appetizer-2", label: "Appetizer 3" },

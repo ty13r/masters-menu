@@ -27,22 +27,22 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Masters Club Dinner Menu Builder",
+  title: "Masters Club Champions Menu Builder",
   description:
-    "Create your own Masters Club Dinner menu and share it with friends on social media.",
+    "Create your own Masters Club Champions menu and share it with friends on social media.",
   openGraph: {
-    title: "Masters Club Dinner Menu Builder",
+    title: "Masters Club Champions Menu Builder",
     description:
-      "Create your own Masters Club Dinner menu and share it with friends on social media.",
+      "Create your own Masters Club Champions menu and share it with friends on social media.",
     images: [
       { url: "/api/og?format=landscape", width: 1200, height: 630 },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Masters Club Dinner Menu Builder",
+    title: "Masters Club Champions Menu Builder",
     description:
-      "Create your own Masters Club Dinner menu and share it with friends on social media.",
+      "Create your own Masters Club Champions menu and share it with friends on social media.",
     images: ["/api/og?format=landscape"],
   },
 };
