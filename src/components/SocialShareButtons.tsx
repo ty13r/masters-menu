@@ -131,10 +131,44 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
       setSubmitted(false);
       setError("");
 
+      let id: string;
+      let menuUrl: string;
       try {
-        const { id, url: menuUrl } = await createShortUrl();
-        setActivePlatform(platform);
+        const created = await createShortUrl();
+        id = created.id;
+        menuUrl = created.url;
+      } catch {
+        setError("Couldn't create a share link. Please try again.");
+        setSharingPlatform(null);
+        return;
+      }
 
+      setActivePlatform(platform);
+
+      // Helper: copy with ClipboardItem (Promise-based API that survives
+      // awaits on iOS Safari) and fall back to writeText otherwise.
+      // Never throws — clipboard failures are non-fatal.
+      const tryCopy = async (text: string) => {
+        try {
+          if (
+            typeof ClipboardItem !== "undefined" &&
+            navigator.clipboard &&
+            "write" in navigator.clipboard
+          ) {
+            const item = new ClipboardItem({
+              "text/plain": new Blob([text], { type: "text/plain" }),
+            });
+            await navigator.clipboard.write([item]);
+            return true;
+          }
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch {
+          return false;
+        }
+      };
+
+      try {
         switch (platform) {
           case "x":
             window.open(getTwitterShareUrl(menuUrl, menu.honoree), "_blank");
@@ -144,27 +178,43 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
             break;
           case "instagram": {
             const igText = getInstagramCopyText(menuUrl, menu.honoree);
-            await navigator.clipboard.writeText(igText);
+            const copied = await tryCopy(igText);
             try {
               await downloadOgImage(id, "square");
             } catch {
-              await downloadPng();
+              try {
+                await downloadPng();
+              } catch {
+                // fall through — user still has the menu id / link
+              }
+            }
+            if (!copied) {
+              setError(
+                "Couldn't copy caption to clipboard. You can still paste your post URL below."
+              );
             }
             break;
           }
           case "tiktok": {
             const ttText = getTikTokCopyText(menuUrl, menu.honoree);
-            await navigator.clipboard.writeText(ttText);
+            const copied = await tryCopy(ttText);
             try {
               await downloadOgImage(id, "story");
             } catch {
-              await downloadPng();
+              try {
+                await downloadPng();
+              } catch {
+                // fall through
+              }
+            }
+            if (!copied) {
+              setError(
+                "Couldn't copy caption to clipboard. You can still paste your post URL below."
+              );
             }
             break;
           }
         }
-      } catch {
-        setError("Failed to create share link. Please try again.");
       } finally {
         setSharingPlatform(null);
       }
