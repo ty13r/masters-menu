@@ -234,12 +234,40 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
       </div>
 
       {activePlatform && !submitted && (
-        <div className="bg-gray-50 rounded-lg p-3 space-y-2">
-          <p className="text-xs text-gray-600">
-            {activePlatform === "instagram" || activePlatform === "tiktok"
-              ? `Text copied & image downloaded! Post to ${PLATFORM_LABELS[activePlatform]}, then paste the post URL below.`
-              : `After posting, paste your ${PLATFORM_LABELS[activePlatform]} post URL below to join the leaderboard.`}
-          </p>
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 space-y-2">
+          {activePlatform === "instagram" || activePlatform === "tiktok" ? (
+            <div className="space-y-1">
+              <p className="text-xs font-semibold text-[#006747]">
+                Next steps for {PLATFORM_LABELS[activePlatform]}:
+              </p>
+              <ol className="text-xs text-gray-700 list-decimal list-inside space-y-0.5">
+                <li>Your menu image has been downloaded</li>
+                <li>Caption text has been copied to your clipboard</li>
+                <li>
+                  Open{" "}
+                  <a
+                    href={
+                      activePlatform === "instagram"
+                        ? "https://www.instagram.com/"
+                        : "https://www.tiktok.com/upload"
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline text-[#006747]"
+                  >
+                    {PLATFORM_LABELS[activePlatform]}
+                  </a>
+                  , upload the image and paste the caption
+                </li>
+                <li>Paste your post URL below to join the leaderboard</li>
+              </ol>
+            </div>
+          ) : (
+            <p className="text-xs text-gray-700">
+              After posting, paste your {PLATFORM_LABELS[activePlatform]} post
+              URL below to join the leaderboard.
+            </p>
+          )}
           <div className="flex gap-2">
             <input
               type="url"

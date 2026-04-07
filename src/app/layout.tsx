@@ -14,8 +14,14 @@ const lora = Lora({
   display: "swap",
 });
 
+// Prefer the stable production URL over VERCEL_URL, which resolves to a
+// per-deployment preview URL that sits behind Vercel deployment protection —
+// social media scrapers can't access those, which breaks OG previews.
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : null) ||
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
   "http://localhost:3000";
 
