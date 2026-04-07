@@ -13,8 +13,10 @@ const MenuCard = forwardRef<HTMLDivElement, Props>(({ menu }, ref) => {
       ref={ref}
       className="menu-card-wrapper"
       style={{
-        background:
-          "radial-gradient(ellipse at center, #f8c8d4 0%, #f0a8b8 30%, #e890a8 50%, #d4789a 70%, #c06888 100%)",
+        backgroundImage: "url('/menu-background.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         padding: "40px",
         display: "flex",
         justifyContent: "center",
@@ -124,7 +126,7 @@ const MenuCard = forwardRef<HTMLDivElement, Props>(({ menu }, ref) => {
         <DishItem dish={menu.dessert} />
         <Spacer />
 
-        {/* Wine Pairings */}
+        {/* Beverage Pairings */}
         <div style={{ marginBottom: "24px" }}>
           {menu.wines.map((wine, i) => (
             <p
