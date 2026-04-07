@@ -93,7 +93,9 @@ export default function Home() {
       generated: MenuData,
       context: { themeId: ThemeId | null; freeform: string }
     ) => {
-      setMenu(generated);
+      // The AI invents its own date; always pin it to the real Masters
+      // Champions Dinner date since users can't edit it anyway.
+      setMenu({ ...generated, date: "April 7, 2026" });
       setThemeId(context.themeId);
       setThemeFreeform(context.freeform);
       setAiModalOpen(false);
