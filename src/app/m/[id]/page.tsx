@@ -19,7 +19,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Check out ${stored.honoree}'s Masters Club Dinner menu!`
     : "Create your own Masters Club Dinner menu and share it with friends.";
 
-  const ogUrl = stored ? `/api/og?d=${stored.data}` : "/api/og";
+  const ogUrl = stored
+    ? `/api/og?id=${id}&format=landscape`
+    : "/api/og?format=landscape";
 
   return {
     title,
