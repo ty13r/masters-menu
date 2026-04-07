@@ -82,7 +82,10 @@ export default function AiGenerateModal({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           honoree: honoree.trim(),
-          themeId: themeId ?? "posh",
+          // Pass themeId as-is (null when the user only typed freeform).
+          // The server has a freeform-only prompt mode that's much stronger
+          // than letting "posh" silently take over.
+          themeId: themeId ?? undefined,
           freeform: freeform.trim() || undefined,
         }),
       });

@@ -227,6 +227,27 @@ dialog.ai-generate-modal[open] {
   border-color: #006747;
 }
 
+.freeform-example-chip {
+  display: inline-block;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-style: italic;
+  color: rgba(0, 103, 71, 0.7);
+  background: rgba(0, 103, 71, 0.04);
+  border: 1px dashed rgba(0, 103, 71, 0.25);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease,
+    border-color 120ms ease;
+}
+
+.freeform-example-chip:hover {
+  color: #006747;
+  background: rgba(0, 103, 71, 0.1);
+  border-color: rgba(0, 103, 71, 0.5);
+  border-style: solid;
+}
+
 /* ─────────────────────────────────────────────────────────────────────
    Inspire Me button + popover (lives in GuidedEditBar)
    ───────────────────────────────────────────────────────────────────── */

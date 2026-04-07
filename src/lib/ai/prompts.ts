@@ -48,26 +48,58 @@ Theme: Comfort Food. Elevated childhood favorites. Mac and cheese with truffle. 
 };
 
 export interface PromptContext {
-  themeId: ThemeId;
+  themeId: ThemeId | null;
   freeform?: string;
   honoree: string;
 }
+
+const AUGUSTA_PREAMBLE = `You are a creative menu writer composing a Masters Champions Dinner menu honoring \${honoree}. The Masters Champions Dinner is the most exclusive private dinner in golf — held the Tuesday of Masters week at Augusta National, hosted by the previous year's champion, with every living past champion in attendance. Treat this menu as if it were really going to be served in that room.`;
+
+const FREEFORM_PRIMARY_INSTRUCTION = `THE USER HAS GIVEN YOU A SPECIFIC VIBE TO RUN WITH. This vibe is the single most important creative direction — it overrides any default refinement, and you should LEAN HARD into it. Be bold, specific, and unafraid to commit to the bit. If the vibe is irreverent (e.g. "crypto bros", "Texas oil money", "frat house"), the dish names and descriptions should be unmistakably that — invented brand names, in-jokes, era-appropriate references, the works. Generic "elevated" food is the failure mode. The menu should make the user laugh out loud with recognition on at least 3-4 items.
+
+Even with a wild vibe, the FORMAT stays Augusta-style (4 appetizers, first course, 2 main course options, dessert, 4 beverage pairings). The tone, references, and personality are what change.`;
 
 export function buildSystemPrompt({
   themeId,
   freeform,
   honoree,
 }: PromptContext): string {
-  const themeGuidance = THEME_GUIDANCE[themeId].replace(
+  const preamble = AUGUSTA_PREAMBLE.replace(/\$\{honoree\}/g, honoree);
+
+  // Three modes:
+  // 1. themeId only → use the curated theme guidance as the dominant signal
+  // 2. freeform only → freeform is THE directive, no chip guidance
+  // 3. themeId + freeform → theme as base, freeform as override (unused
+  //    today since the modal makes them mutually exclusive, but supported
+  //    so per-field "Inspire me" with toneTweak still works)
+
+  const trimmedFreeform = freeform?.trim();
+
+  if (!themeId && trimmedFreeform) {
+    return `${preamble}
+
+${FREEFORM_PRIMARY_INSTRUCTION}
+
+The user's vibe is:
+"${trimmedFreeform}"
+
+${FORMAT_RULES}
+
+Return ONLY the structured menu data. Do not add commentary, headers, or explanation.`;
+  }
+
+  // Default: use a chip's theme guidance, optionally with freeform overlay
+  const effectiveThemeId: ThemeId = themeId ?? "posh";
+  const themeGuidance = THEME_GUIDANCE[effectiveThemeId].replace(
     /\$\{honoree\}/g,
     honoree
   );
 
-  const freeformBlock = freeform
-    ? `\n\nAdditional user direction (treat as a strong steer):\n"${freeform.trim()}"`
+  const freeformBlock = trimmedFreeform
+    ? `\n\nADDITIONAL USER DIRECTION — treat this as a strong overlay on top of the theme above:\n"${trimmedFreeform}"`
     : "";
 
-  return `You are a creative menu writer composing a Masters Champions Dinner menu honoring ${honoree}. The Masters Champions Dinner is the most exclusive private dinner in golf — held the Tuesday of Masters week at Augusta National, hosted by the previous year's champion, with every living past champion in attendance. Treat this menu as if it were really going to be served in that room.
+  return `${preamble}
 
 ${themeGuidance.trim()}${freeformBlock}
 
