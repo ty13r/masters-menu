@@ -105,6 +105,21 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
     link.click();
   }, [cardRef, menu.honoree]);
 
+  const downloadOgImage = useCallback(
+    async (id: string, format: "square" | "story") => {
+      const res = await fetch(`/api/og?id=${id}&format=${format}`);
+      if (!res.ok) throw new Error("Failed to fetch OG image");
+      const blob = await res.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = `masters-dinner-${menu.honoree.replace(/\s+/g, "-").toLowerCase()}-${format}.png`;
+      link.href = objectUrl;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+    },
+    [menu.honoree]
+  );
+
   const handleShare = useCallback(
     async (platform: Platform) => {
       setSharingPlatform(platform);
@@ -113,7 +128,7 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
       setError("");
 
       try {
-        const { url: menuUrl } = await createShortUrl();
+        const { id, url: menuUrl } = await createShortUrl();
         setActivePlatform(platform);
 
         switch (platform) {
@@ -126,13 +141,21 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
           case "instagram": {
             const igText = getInstagramCopyText(menuUrl, menu.honoree);
             await navigator.clipboard.writeText(igText);
-            await downloadPng();
+            try {
+              await downloadOgImage(id, "square");
+            } catch {
+              await downloadPng();
+            }
             break;
           }
           case "tiktok": {
             const ttText = getTikTokCopyText(menuUrl, menu.honoree);
             await navigator.clipboard.writeText(ttText);
-            await downloadPng();
+            try {
+              await downloadOgImage(id, "story");
+            } catch {
+              await downloadPng();
+            }
             break;
           }
         }
@@ -142,7 +165,7 @@ export default function SocialShareButtons({ menu, cardRef }: Props) {
         setSharingPlatform(null);
       }
     },
-    [createShortUrl, menu.honoree, downloadPng]
+    [createShortUrl, menu.honoree, downloadPng, downloadOgImage]
   );
 
   const handleSubmitUrl = useCallback(async () => {
