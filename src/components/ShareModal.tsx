@@ -108,7 +108,7 @@ export default function ShareModal({ open, onClose, menu, cardRef }: Props) {
           </button>
         </div>
         <p className="text-sm text-gray-600 mb-5">
-          Share it with friends and join the leaderboard.
+          Share it with friends and climb the popular menus list.
         </p>
 
         <div className="flex gap-2 mb-5">
