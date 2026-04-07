@@ -2,9 +2,10 @@
 
 interface Props {
   onStart: () => void;
+  onGenerateAi: () => void;
 }
 
-export default function LandingHero({ onStart }: Props) {
+export default function LandingHero({ onStart, onGenerateAi }: Props) {
   return (
     <div
       className="min-h-[calc(100vh-80px)] flex items-center justify-center px-6"
@@ -26,19 +27,28 @@ export default function LandingHero({ onStart }: Props) {
           className="text-3xl sm:text-4xl font-bold text-[#006747] mb-3"
           style={{ fontFamily: "var(--font-playfair), serif" }}
         >
-          Build Your Masters Club Dinner
+          Build Your Masters Club Champions Menu
         </h1>
         <p className="text-[#006747]/80 mb-8 text-base leading-relaxed">
           A guided walkthrough. About two minutes. Then share your menu with
           friends and see if you can top the leaderboard.
         </p>
-        <button
-          type="button"
-          onClick={onStart}
-          className="inline-block px-8 py-3 bg-[#006747] text-white rounded-lg font-semibold text-base hover:bg-[#005238] transition-colors cursor-pointer shadow-md"
-        >
-          Build Your Menu →
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <button
+            type="button"
+            onClick={onStart}
+            className="px-8 py-3 bg-[#006747] text-white rounded-lg font-semibold text-base hover:bg-[#005238] transition-colors cursor-pointer shadow-md"
+          >
+            Build Your Menu →
+          </button>
+          <button
+            type="button"
+            onClick={onGenerateAi}
+            className="px-8 py-3 border-2 border-[#006747] text-[#006747] rounded-lg font-semibold text-base hover:bg-[#006747]/5 transition-colors cursor-pointer"
+          >
+            ✨ Generate with AI
+          </button>
+        </div>
         <div className="mt-6">
           <a
             href="/leaderboard"

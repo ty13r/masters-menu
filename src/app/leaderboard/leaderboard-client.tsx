@@ -10,7 +10,7 @@ export default function LeaderboardClient() {
           className="text-xl font-bold text-center"
           style={{ fontFamily: "var(--font-playfair), serif" }}
         >
-          Masters Club Dinner Leaderboard
+          Masters Club Champions Leaderboard
         </h1>
         <p className="text-center text-sm opacity-80 mt-1">
           Ranked by total social media engagement

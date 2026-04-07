@@ -13,11 +13,11 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const menu = encoded ? decodeMenu(encoded) : null;
 
   const title = menu
-    ? `${menu.honoree}'s Masters Club Dinner`
-    : "Masters Club Dinner Menu Builder";
+    ? `${menu.honoree}'s Masters Club Champions`
+    : "Masters Club Champions Menu Builder";
   const description = menu
-    ? `Check out ${menu.honoree}'s Masters Club Dinner menu!`
-    : "Create your own Masters Club Dinner menu and share it with friends.";
+    ? `Check out ${menu.honoree}'s Masters Club Champions menu!`
+    : "Create your own Masters Club Champions menu and share it with friends.";
 
   const ogUrl = encoded
     ? `/api/og?d=${encoded}`

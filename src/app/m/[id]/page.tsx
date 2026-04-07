@@ -13,11 +13,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stored = await getMenu(id).catch(() => null);
 
   const title = stored
-    ? `${stored.honoree}'s Masters Club Dinner`
-    : "Masters Club Dinner Menu Builder";
+    ? `${stored.honoree}'s Masters Club Champions`
+    : "Masters Club Champions Menu Builder";
   const description = stored
-    ? `Check out ${stored.honoree}'s Masters Club Dinner menu!`
-    : "Create your own Masters Club Dinner menu and share it with friends.";
+    ? `Check out ${stored.honoree}'s Masters Club Champions menu!`
+    : "Create your own Masters Club Champions menu and share it with friends.";
 
   const ogUrl = stored
     ? `/api/og?id=${id}&format=landscape`

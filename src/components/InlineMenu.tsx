@@ -100,19 +100,8 @@ const InlineMenu = forwardRef<HTMLDivElement, Props>(function InlineMenu(
           Masters Club Dinner
         </h1>
 
-        {/* Date group */}
-        <StepGroup id="date" activeStepId={activeStepId}>
-          <p style={{ fontSize: "14px", margin: "0 0 28px" }}>
-            <EditableText
-              ref={setFirstFieldRef("date")}
-              value={menu.date}
-              placeholder="Add date"
-              disabled={!editable}
-              onChange={(v) => updateField("date", v)}
-              ariaLabel="Menu date"
-            />
-          </p>
-        </StepGroup>
+        {/* Date — static, not editable */}
+        <p style={{ fontSize: "14px", margin: "0 0 28px" }}>{menu.date}</p>
 
         {/* Appetizers */}
         <SectionHeader>Appetizers</SectionHeader>

@@ -68,6 +68,13 @@ export function ensureSchema(): Promise<void> {
         CREATE INDEX IF NOT EXISTS idx_social_posts_entry
         ON social_posts(entry_id)
       `;
+      await pool.sql`
+        CREATE TABLE IF NOT EXISTS ai_rate_limits (
+          ip TEXT PRIMARY KEY,
+          window_start TIMESTAMPTZ NOT NULL,
+          count INTEGER NOT NULL DEFAULT 0
+        )
+      `;
     })().catch((err) => {
       schemaReady = null;
       throw err;
