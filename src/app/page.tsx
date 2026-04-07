@@ -39,9 +39,9 @@ export default function Home() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Editor */}
-          <div className="space-y-6">
+          <div className="space-y-6 lg:col-span-1">
             <MenuEditor
               menu={menu}
               updateField={updateField}
@@ -52,7 +52,7 @@ export default function Home() {
           </div>
 
           {/* Live Preview */}
-          <div className="lg:sticky lg:top-4 lg:self-start">
+          <div className="lg:col-span-2 lg:sticky lg:top-4 lg:self-start">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                 Live Preview
