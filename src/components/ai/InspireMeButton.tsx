@@ -65,7 +65,7 @@ export default function InspireMeButton({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             honoree,
-            themeId: themeId ?? "posh",
+            themeId: themeId ?? undefined,
             freeform: freeform || undefined,
             field,
             currentMenu,
