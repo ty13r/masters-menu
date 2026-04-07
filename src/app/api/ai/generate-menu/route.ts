@@ -47,13 +47,13 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { honoree, themeId = "posh", freeform } = parsed.data;
+  const { honoree, themeId, freeform } = parsed.data;
 
   try {
     const result = await generateObject({
       model: anthropicModel(),
       schema: generatedMenuSchema,
-      system: buildSystemPrompt({ themeId, freeform, honoree }),
+      system: buildSystemPrompt({ themeId: themeId ?? null, freeform, honoree }),
       prompt: buildFullMenuPrompt(honoree),
     });
 

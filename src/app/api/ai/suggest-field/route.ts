@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
 
   const {
     honoree,
-    themeId = "posh",
+    themeId,
     freeform,
     field,
     currentMenu,
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       model: anthropicModel(),
       schema: fieldSuggestionSchema,
       system: buildSystemPrompt({
-        themeId,
+        themeId: themeId ?? null,
         freeform: combinedFreeform || undefined,
         honoree,
       }),
