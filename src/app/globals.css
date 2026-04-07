@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --masters-green: #006747;
 }
 
 body {
@@ -10,3 +11,120 @@ body {
   color: var(--foreground);
   font-family: var(--font-lora), serif;
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+   Inline editing affordances for InlineMenu
+   ───────────────────────────────────────────────────────────────────── */
+
+[data-editable] {
+  cursor: text;
+  outline: none;
+  border-radius: 2px;
+  transition: box-shadow 120ms ease, background-color 120ms ease;
+  /* Inherit typography from parent */
+  display: inline;
+  min-width: 1ch;
+}
+
+[data-editable]:hover {
+  box-shadow: inset 0 -1px 0 rgba(0, 103, 71, 0.35);
+}
+
+[data-editable]:focus {
+  background-color: rgba(0, 103, 71, 0.06);
+  box-shadow: inset 0 -1px 0 rgba(0, 103, 71, 0.6);
+}
+
+[data-editable][data-empty]:not(:focus)::before {
+  content: attr(data-placeholder);
+  color: rgba(0, 103, 71, 0.4);
+  font-style: italic;
+  pointer-events: none;
+}
+
+/* Multiline editable (descriptions) — render as block so newlines render */
+div[data-editable] {
+  display: block;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Guided edit step group highlight
+   ───────────────────────────────────────────────────────────────────── */
+
+[data-step-group][data-active="true"] {
+  position: relative;
+}
+
+[data-step-group][data-active="true"]::before {
+  content: "";
+  position: absolute;
+  inset: -8px -12px;
+  border: 2px solid rgba(0, 103, 71, 0.45);
+  border-radius: 8px;
+  pointer-events: none;
+  box-shadow: 0 0 0 6px rgba(0, 103, 71, 0.08);
+  animation: stepPulse 1.6s ease-out infinite;
+}
+
+@keyframes stepPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 6px rgba(0, 103, 71, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(0, 103, 71, 0.04);
+  }
+}
+
+/* Inline step groups (used for main course names and honoree) shouldn't
+   pop out as a block — drop the box shadow halo and keep just a soft
+   underline. */
+span[data-step-group][data-active="true"]::before {
+  display: none;
+}
+
+span[data-step-group][data-active="true"] {
+  background: rgba(0, 103, 71, 0.08);
+  border-radius: 3px;
+  padding: 0 4px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Share modal (native <dialog>)
+   ───────────────────────────────────────────────────────────────────── */
+
+dialog.share-modal {
+  border: none;
+  max-width: min(28rem, calc(100vw - 2rem));
+  width: 100%;
+  padding: 0;
+  margin: auto;
+  background: transparent;
+}
+
+dialog.share-modal[open] {
+  animation: modalIn 200ms ease-out;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 640px) {
+  dialog.share-modal {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100vw;
+    height: auto;
+    margin: auto 0 0 0;
+    border-radius: 16px 16px 0 0;
+  }
+}
+
